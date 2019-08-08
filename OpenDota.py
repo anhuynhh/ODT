@@ -10,9 +10,7 @@ api_base = "https://api.opendota.com/api"
 def getLastMatch():
     r = requests.get(url=api_base + "/players/" + account_id + "/recentMatches/")
     data = r.json()
-    print(data[0])
-
-    t = time.strftime("%H:%M:%S @ %d.%m.%Y", time.localtime(data[0]["start_time"]))
+    return data[0]["match_id"]
 
 
 # Get lane role
@@ -25,7 +23,8 @@ def getLaneRole(lane_role):
         "4": "Jungle"
     }.get(lane_role, "Support")
 
-#Get hero name
+
+# Get hero name
 def getHero(hero_id):
     #r = requests.get(url=api_base + "/heroes")
     #data = r.json()
@@ -41,4 +40,18 @@ def getHero(hero_id):
             return i["localized_name"]
 
 
-print(getHero(101))
+# Get time of match
+def getTimeAndDate(start_time):
+    return time.strftime("%H:%M:%S @ %d.%m.%Y", time.localtime(start_time))
+
+
+# Did you win? If true then yes, if false then no
+def winOrLose(player_slot, radiant_win):
+    #Which slot the player is in. 0-127 are Radiant, 128-255 are Dire
+    if player_slot < 128 and radiant_win == "true":
+        return True
+    else:
+        return False
+
+
+print(winOrLose(0, "false"))
