@@ -1,6 +1,8 @@
-import OpenDota
-import LastMatchInformation
+from OpenDota import getLastMatch
+from LastMatchInformation import LastMatchInformation
 
-OpenDota.getLastMatch()
 lmi = LastMatchInformation()
+lmi = getLastMatch(lmi)
+
+
 

@@ -1,16 +1,26 @@
 import requests
 import time
 import json
+from LastMatchInformation import LastMatchInformation
 
 account_id = "14367619"
 api_base = "https://api.opendota.com/api"
 
 
 # Get last match
-def getLastMatch():
+def getLastMatch(lmi):
+    lmi = LastMatchInformation()
     r = requests.get(url=api_base + "/players/" + account_id + "/recentMatches/")
     data = r.json()
-    return data[0]["match_id"]
+
+    lmi.match_id = data[0]["match_id"]
+    lmi.kills = data[0]["kills"]
+    lmi.time = getTimeAndDate(data[0]["start_time"])
+    lmi.win = winOrLose(data[0]["player_slot"], data[0]["radiant_win"])
+    lmi.lane = getLaneRole(data[0]["lane_role"])
+    lmi.hero = getHero(data[0]["hero_id"])
+
+    return lmi
 
 
 # Get lane role
@@ -33,7 +43,7 @@ def getHero(hero_id):
     #All the heroes
     with open('Heroes.json', "r") as f:
         data = json.load(f)
-    print(data)
+
     #Find Hero in JSON
     for i in data:
         if hero_id == i["id"]:
@@ -52,6 +62,3 @@ def winOrLose(player_slot, radiant_win):
         return True
     else:
         return False
-
-
-print(winOrLose(0, "false"))
