@@ -2,8 +2,9 @@ import requests
 import time
 import json
 from LastMatchInformation import LastMatchInformation
+from Configuration.OpenDotaConfiguration import account_id
 
-account_id = "14367619"
+account_id = account_id
 api_base = "https://api.opendota.com/api"
 
 
@@ -27,11 +28,11 @@ def getLastMatch(lmi):
 def getLaneRole(lane_role):
     #1-4 (Safe, Mid, Off, Jungle)
     return {
-        "1": "Safelane",
-        "2": "Midlane",
-        "3": "Offlane",
-        "4": "Jungle"
-    }.get(lane_role, "Support")
+        1: "safelane",
+        2: "midlane",
+        3: "offlane",
+        4: "jungle"
+    }.get(lane_role, "support")
 
 
 # Get hero name
@@ -59,6 +60,6 @@ def getTimeAndDate(start_time):
 def winOrLose(player_slot, radiant_win):
     #Which slot the player is in. 0-127 are Radiant, 128-255 are Dire
     if player_slot < 128 and radiant_win == "true":
-        return True
+        return "lost"
     else:
-        return False
+        return "won"
